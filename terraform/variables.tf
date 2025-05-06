@@ -7,8 +7,9 @@ variable "region" {
 variable "s3_bucket_prefix" {
   description = "The prefix name of the S3 buckets for uploads and processed files"
   type        = string
-  default     = "cloudcore-s3-file"
+  default     = "cloudcore-s3-file-shreyo"
 }
+
 
 variable "lambda_function_name" {
   description = "The name of the Lambda function for processing uploads"
