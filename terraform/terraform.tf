@@ -1,4 +1,5 @@
 terraform {
+  required_version = ">= 1.6.3"
   required_providers {
     aws = {
       source  = "hashicorp/aws"
@@ -6,18 +7,14 @@ terraform {
     }
   }
 
-  backend "remote" {
+  cloud {
     organization = "awscloudcore-hub"
-
     workspaces {
       name = "s3-uploader"
     }
   }
-  required_version = ">= 1.6.3"
 }
 
 provider "aws" {
   region = var.region
 }
-
-
