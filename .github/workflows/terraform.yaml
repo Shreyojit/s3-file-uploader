@@ -2,9 +2,9 @@ name: 'Terraform'
 
 on:
   push:
-    branches: [ "master" ]  
+    branches: [ "main" ]
   pull_request:
-    branches: [ "master" ]  
+    branches: [ "main" ]
 
 permissions:
   contents: read
@@ -21,16 +21,22 @@ jobs:
         working-directory: ./terraform
 
     steps:
-    - name: Checkout
+    - name: Checkout Repository
       uses: actions/checkout@v4
 
-    # Add a step to package the Lambda function
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        aws-access-key-id:     ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region:            ${{ secrets.AWS_REGION }}
+
+    # Package the Lambda function
     - name: Package Lambda Function
       run: |
         cd ../lambda
         zip -r9 lambda_function_payload.zip lambda_function.py
         mv lambda_function_payload.zip ../terraform/
-        cd ../terraform
 
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v3
@@ -40,7 +46,7 @@ jobs:
     - name: Terraform Init
       run: terraform init
 
-    - name: Terraform Format
+    - name: Terraform Format Check
       run: terraform fmt -check
       continue-on-error: true
 
@@ -49,8 +55,8 @@ jobs:
 
     - name: Terraform Plan
       run: terraform plan -no-color -input=false
-      continue-on-error: true 
+      continue-on-error: true
 
     - name: Terraform Apply
-      if: github.ref == 'refs/heads/master' && github.event_name == 'push'
-      run: terraform apply -auto-approve -input=false 
+      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+      run: terraform apply -auto-approve -input=false
