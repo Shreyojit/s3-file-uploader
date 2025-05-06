@@ -1,5 +1,6 @@
 terraform {
   required_version = ">= 1.6.3"
+
   required_providers {
     aws = {
       source  = "hashicorp/aws"
@@ -7,11 +8,11 @@ terraform {
     }
   }
 
-  cloud {
-    organization = "awscloudcore-hub"
-    workspaces {
-      name = "s3-uploader"
-    }
+  backend "s3" {
+    bucket = "tf-state-store-shreyo"  # <-- Replace with your S3 bucket name
+    key    = "s3-file-uploader/terraform.tfstate"
+    region = "us-west-2"
+    encrypt = true
   }
 }
 
