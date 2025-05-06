@@ -9,10 +9,6 @@ on:
 permissions:
   contents: read
 
-env:
-  # Tell the Terraform CLI which Cloud org & workspace to use
-  TF_CLOUD_ORGANIZATION: "awscloudcore-hub"
-  TF_WORKSPACE:           "s3-uploader"
 
 jobs:
   terraform:
