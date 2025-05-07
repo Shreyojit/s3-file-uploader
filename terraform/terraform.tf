@@ -13,6 +13,7 @@ terraform {
     key    = "s3-file-uploader/terraform.tfstate"
     region = "us-west-2"
     encrypt = true
+    dynamodb_table = "tf-state-lock-shreyo"
   }
 }
 
